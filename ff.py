@@ -5,6 +5,7 @@ from sklearn.model_selection import train_test_split
 from tqdm import tqdm
 import matplotlib.pyplot as plt
 
+#Inline edit!
 np.random.seed(1234)
 print('reading in csv files')
 # File read in
