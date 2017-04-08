@@ -5,7 +5,7 @@ from sklearn.model_selection import train_test_split
 from tqdm import tqdm
 import matplotlib.pyplot as plt
 
-np.random.seed(1234)
+np.random.seed(12345) #12345 is a better seed.
 print('reading in csv files')
 # File read in
 # See documentation for more descriptions
@@ -90,7 +90,7 @@ bst = xgb.train(params, d_train, 200, watchlist, early_stopping_rounds=50, verbo
 features = pd.DataFrame(bst.get_fscore().items(), columns=['feature','importance']).sort_values('importance', ascending=False)
 
 # Make predictions
-print('predict with xgb')
+print('predict with xgb!!!')
 tqdm.pandas()
 d_test = xgb.DMatrix(df_test_mh_good_dtypes)
 tqdm.pandas()
