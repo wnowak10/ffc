@@ -5,6 +5,12 @@ from sklearn.model_selection import train_test_split
 from tqdm import tqdm
 import matplotlib.pyplot as plt
 
+import timeit
+
+start = timeit.timeit()
+
+
+
 #Inline edit!
 np.random.seed(1234)
 print('reading in csv files')
@@ -20,12 +26,12 @@ print('read prediction.csv')
 print("Files read")
 
 # Select each column individually from train df
-y_train_grit = train[['challengeID', 'grit']]
-y_train_gpa = train[['challengeID', 'gpa']]
+# y_train_grit = train[['challengeID', 'grit']]
+# y_train_gpa = train[['challengeID', 'gpa']]
 y_train_materialHardship = train[['challengeID', 'materialHardship']]
-y_train_eviction = train[['challengeID', 'eviction']]
-y_train_layoff = train[['challengeID', 'layoff']]
-y_train_jobTraining = train[['challengeID', 'jobTraining']]
+# y_train_eviction = train[['challengeID', 'eviction']]
+# y_train_layoff = train[['challengeID', 'layoff']]
+# y_train_jobTraining = train[['challengeID', 'jobTraining']]
 
 
 
@@ -85,20 +91,23 @@ watchlist = [(d_train, 'train'), (d_valid, 'valid')]
 print('train xgb')
 tqdm.pandas()
 # bst = model.fit(df_test_mh, y_train_mh)
-bst = xgb.train(params, d_train, 200, watchlist, early_stopping_rounds=50, verbose_eval=10)
+bst = xgb.train(params, d_train, 10, watchlist, early_stopping_rounds=50, verbose_eval=10)
 
 # Feature importances df
-features = pd.DataFrame(bst.get_fscore().items(), columns=['feature','importance']).sort_values('importance', ascending=False)
+d = bst.get_fscore()  # print feature scores
+feature = []
+f_importance = []
+for w in sorted(d, key=d.get, reverse=True):
+	feature.append(w)
+	f_importance.append(d[w])
 
-# Make predictions
-print('predict with xgb')
-tqdm.pandas()
-d_test = xgb.DMatrix(df_test_mh_good_dtypes)
-tqdm.pandas()
-p_test = bst.predict(d_test)
+feature_import_df = pd.DataFrame(
+	{'feature': feature,
+	'feature importance': f_importance,
+	})
 
-# feature importance plot
-features = pd.DataFrame(bst.get_fscore().items(), columns=['feature','importance']).sort_values('importance', ascending=False)
+
+
 # plot (awkwardly large plot, as is)
 # plt.rcParams['figure.figsize'] = (12.0, 30.0)
 # xgb.plot_importance(bst)
@@ -119,3 +128,6 @@ sub = preds.append(orig)
 sub.sort_values(by='challengeID')
 
 sub.to_csv('simple_xgb.csv', index=False)
+
+end = timeit.timeit()
+print(end - start)
