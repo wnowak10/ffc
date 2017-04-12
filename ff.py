@@ -112,7 +112,12 @@ feature_import_df = pd.DataFrame(
 # plt.rcParams['figure.figsize'] = (12.0, 30.0)
 # xgb.plot_importance(bst)
 # plt.show()
-
+# Make predictions
+print('predict with xgb')
+tqdm.pandas()
+d_test = xgb.DMatrix(df_test_mh_good_dtypes)
+tqdm.pandas()
+p_test = bst.predict(d_test)
 
 
 # Need to add train labels to submission too, I think
