@@ -12,7 +12,7 @@ start = timeit.timeit()
 
 
 #Inline edit!
-np.random.seed(1234)
+np.random.seed(12345) #12345 is a better seed.
 print('reading in csv files')
 # File read in
 # See documentation for more descriptions
@@ -113,7 +113,7 @@ feature_import_df = pd.DataFrame(
 # xgb.plot_importance(bst)
 # plt.show()
 # Make predictions
-print('predict with xgb')
+print('predict with xgb!!!')
 tqdm.pandas()
 d_test = xgb.DMatrix(df_test_mh_good_dtypes)
 tqdm.pandas()
